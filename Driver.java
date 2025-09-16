@@ -1,155 +1,98 @@
-import java.util.Scanner; //may be necessary for input
+class Main {
+  public static void main(String[] args) {
 
-import javax.swing.JOptionPane; //may be necessary for input
+    
 
-import kareltherobot.*;
 
-public class Driver implements Directions {
-    // declared here so it is visible in all the methods!!
-    // It will be assigned a value in the getInfo method
-    private static Robot roomba;
-    static Directions.Direction dir;
+    //Use the // to create single line comments to either add info or to take out code for debugging
 
-    // You will add very many variables!!
+    System.out.println("Hello world!");
 
-    // Converts a direction string to the corresponding integer constant
+    //We will be using System.out.println and System.out.print throughout the year. Try using both below to see what the difference is!
 
-    public static void main(String[] args) {
-        // LEAVE THIS ALONE!!!!!!
-        Driver d = new Driver();
-        String streetString = JOptionPane.showInputDialog("Enter the starting street for Karel:");
-        int street = Integer.parseInt(streetString);
-        String avenueString = JOptionPane.showInputDialog("Enter the starting avenue for Karel:");
-        int avenue = Integer.parseInt(avenueString);
-        roomba = new Robot(street, avenue, East, 0); // 0 beepers in bag
 
-        /**
-         * This section of code gets info from the user in the following order: 1. Ask
-         * the user
-         * which world file they wish to process. Right now, that world file name is
-         * hardcoded in. 2. Ask the user for the starting location and direction of the
-         * Robot. A new Robot should be constructed and assigned to the global
-         * (instance) variable named roomba that is declared on line 10.
-         * 
-         * An inelegant way to interact with the user is via the console, using
-         * System.out.println and a Scanner that scans System.in (input from the
-         * console). A more elegant way to get user input might include using a
-         * JOptionPane.
-         */
 
-        String wrldName = "basicRoom.wld";
 
-        World.readWorld(wrldName);
-        World.setVisible(true);
 
-        /**
-         * This section will have all the logic that takes the Robot to every location
-         * and cleans up all piles of beepers. Think about ways you can break this
-         * large, complex task into smaller, easier to solve problems.
-         */
 
-        // the line below causes a null pointer exception
-        // what is that and why are we getting it?
+    //ANSWER: 
 
-        // first check the current direction, then move towards top left corner
 
-        System.out.println("World.beepers()" + World.beepers());
-        if (roomba.facingEast()) {
-            roomba.turnLeft();
-            roomba.turnLeft();
-        } else if (roomba.facingNorth()) {
-            roomba.turnLeft();
-        } else if (roomba.facingSouth()) {
-            roomba.turnLeft();
-            roomba.turnLeft();
-            roomba.turnLeft();
+
+    //Throughout the year this year we will need to store information. For that we will be using VARIABLES!
+
+    //Java is an Object-Oriented programming language. All variables we use this year will either be OBJECTS or PRIMITIVES
+
+    //There are 8 primitives in Java: int, byte, short, long, float, double, boolean, char
+
+    //For AP we need to know: int, double, boolean
+
+    //List examples of the types below and give definition
+    //int (integer): 1,2,3,4
+    //integer: any whole number, positive or negative, including zero
+    //double:1,2. 5.6, 4.3
+    //double: any number that has a decimal point
+    //boolean: true, false
+    //boolean: any data type that involves a condition
+
+    //For now we are just going to work with primitive
+
+    //Create 3 variables of each of the above types (USE GOOD CODING PRACTICE WHEN CREATING THE VARIABLES
+
+ int age=16;
+ int year=2025;
+ int grade=11;
+ double height=5.3;
+ double weight=130.5;
+ double gpa=3.8;
+ boolean isStudent=true;
+ boolean isGraduated=false;
+ boolean isWorking=true;
+
+ System.out.println("Age: " + age);
+ System.out.println("Year: " + year);
+ System.out.println("10 times 10=" +100);
+
+
+
+    //MATH TIME!
+
+    //What are the math operators that we can use?
+    //+ - * / %
+
+    //Try doing some math operations with numbers. How can we check to see if the math worked?
+  
+  int a = 6, b = 8;
+  System.out.println("Addition: " + (a + b));
+  int difference = a - b;
+    System.out.println("Difference: " + difference);
+    //Create codes that will print the following:
+
+    //Odd integers from 1 to 100, inclusive of both
+    System.out.println("Odd integers from 1 to 100:");
+    for (int i = 1; i <= 100; i += 2) {
+            System.out.print(i + " ");
         }
-        while (roomba.frontIsClear()) {
-            roomba.move();
+    System.out.println();
+
+
+    //All multiples of 3 from 1 to 100
+System.out.println("Multiples of 3 from 1 to 100:");
+        for (int i = 3; i <= 100; i += 3) {
+            System.out.print(i + " ");
         }
+        System.out.println();
 
-        // turn left three times to look north
-        roomba.turnLeft();
-        roomba.turnLeft();
-        roomba.turnLeft();
-        while (roomba.frontIsClear()) {
-            roomba.move();
-        }
-        roomba.turnLeft();
-        roomba.turnLeft();
-        roomba.turnLeft();
 
-        // now zig zag roomba across the room
-        int totalBeepers = 0;
-        int beeperPiles = 0;
-        int largestPile = 0;
-        int largestPileX = 0;
-        int largestPileY = 0;
 
-        int height = 1;
-        int actualWidth = 0;
-        boolean goingEast = true;
-
-        while (true) {
-            int innerWidth = 0;
-            while (true) {
-                if (roomba.nextToABeeper()) {
-                    int innerBeepers = 0;
-                    beeperPiles += 1;
-                    while (roomba.nextToABeeper()) {
-                        roomba.pickBeeper();
-                        innerBeepers += 1;
-                    }
-                    if (innerBeepers > largestPile) {
-                        largestPile = innerBeepers;
-                        largestPileX = innerWidth;
-                        largestPileY = height;
-                    }
-                    totalBeepers += innerBeepers;
-                }
-                if (!roomba.frontIsClear())
-                    break;
-                roomba.move();
-                innerWidth += 1; // Only increment after a successful move
-            }
-            actualWidth = Math.max(actualWidth, innerWidth);
-
-            // Try to move down to the next row
-            if (goingEast) {
-                roomba.turnLeft();
-                roomba.turnLeft();
-                roomba.turnLeft();
-                if (!roomba.frontIsClear())
-                    break;
-                roomba.move();
-                roomba.turnLeft();
-                roomba.turnLeft();
-                roomba.turnLeft();
+    //Starting at 1000, print on the same line (with a - [hypthen] between each) all of the numbers that end in 0 going down to 0
+    System.out.println("Numbers ending in 0 from 1000 down to 0:");
+        for (int i = 1000; i >= 0; i -= 10) {
+            if (i > 0) {
+                System.out.print(i + "-");
             } else {
-                roomba.turnLeft();
-                if (!roomba.frontIsClear())
-                    break;
-                roomba.move();
-                roomba.turnLeft();
+                System.out.print(i); // last one without hyphen
             }
-            height += 1;
-            goingEast = !goingEast;
         }
-
-        /**
-         * This method displays the results of cleaning the room. All of the info
-         * in the pdf that describes the problem need to be displayed. You can present
-         * this info in the console (boring) or you can present using JOptionPane
-         * (cool!)
-         */
-
-        int area = height * (actualWidth + 1);
-        System.out.println("The area is: " + area);
-        System.out.println("The total number of piles is: " + beeperPiles);
-        System.out.println("The total number of beepers is: " + totalBeepers);
-        System.out.println("Largest pile location: right " + largestPileX + " and down " + (largestPileY-1));
-        System.out.println("Average pile size: " + (beeperPiles == 0 ? 0 : (double) totalBeepers / beeperPiles));
-        System.out.println("Percent dirty: " + (area == 0 ? 0 : (double) beeperPiles / area));
-        System.out.println("The largest pile was " + largestPile + " beepers");
-    }
+  }
 }
